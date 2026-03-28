@@ -1,0 +1,25 @@
+# /etc/sssd/sssd.conf
+
+[sssd]
+domains = your_domain.local
+config_file_version = 2
+services = nss, pam
+
+[domain/your_domain.local]
+default_shell = /bin/bash
+krb5_store_password_if_offline = True
+cache_credentials = True
+krb5_realm = YOUR_DOMAIN.LOCAL
+realmd_tags = manages-system joined-with-adcli
+id_provider = ad
+fallback_homedir = /home/%u@%d
+ad_domain = your_domain.local
+use_fully_qualified_names = False        #I changed this field to False just for skipping the domain side
+ldap_id_mapping = True
+access_provider = ad
+
+
+  # /etc/sudoers.d/ad_admins
+
+  "%Linux_Admins@your_domain.local" ALL=(ALL) ALL
+  
