@@ -18,18 +18,41 @@ In modern hybrid environments, centralized identity management is crucial for se
 * **Tools:** `realmd`, `sssd`, `adcli`, `samba-common-tools`
 * **Protocols:** Kerberos, LDAP, SMB
 
+
 ##  Configuration Highlights
 
-### 1. SSSD Configuration
+### 3. Windows Server 2022 Configuration
+To enable **Role-Based Access Control (RBAC)** for our Linux environment, several steps were performed on the Windows Domain Controller.
+#### 1. Active Directory Security Group Creation
+A dedicated Security Group was created to manage administrative privileges across the Linux infrastructure. Centralizing this in AD allows us to grant or revoke sudo access without touching the Linux servers directly.
+
+Tool: Active Directory Users and Computers (ADUC).
+
+Group Name: Linux_Admins
+
+Group Scope: Global
+
+Group Type: Security
+
+![AD Group Check](docs/screenshots/Sec_Group.png)
+
+#### 2. User Assignment
+To test the integration, a standard domain user was added to the Linux_Admins group. This user will automatically inherit sudo privileges on any Linux machine configured to recognize this group.
+
+Action: Add member test_admin (or your username) to Linux_Admins.
+
+![AD Group Members_Check](docs/screenshots/Mem_of_sec.png)
+
+### 2. SSSD Configuration
 The core of the integration lies in `/etc/sssd/sssd.conf`. It ensures seamless communication with the Domain Controller and handles ID mapping.
 
-### 2. Sudoers Integration
+### 3. Sudoers Integration
 Instead of manual user management, a specific AD group (e.g., `Linux_Admins`) is mapped to the sudoers policy:
 ```bash
 # Location: /etc/sudoers.d/ad_admins
 "%Linux_Admins@yourdomain.local" ALL=(ALL) ALL
 ```
-### 3. Home Directory Automation
+### 4. Home Directory Automation
 Enabled via authselect to ensure a consistent user experience:
 ```bash
 sudo authselect enable-feature with-mkhomedir
