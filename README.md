@@ -99,8 +99,20 @@ Instead of manual user management, a specific AD group (e.g., `Linux_Admins`) is
 To check if we really get the sudoer rights we run ``sudo -l`` command:
 ![SUDOERS_FILE](docs/screenshots/sudo-l.png)
 ### 4. Home Directory Automation
-Enabled via authselect to ensure a consistent user experience:
-```bash
-sudo authselect enable-feature with-mkhomedir
+In an Enterprise environment, domain users don't have local home directories by default. To ensure a seamless login experience, I enabled automatic home directory creation upon the first login.
+The feature was enabled using authselect to configure the PAM (Pluggable Authentication Modules) stack:
 ```
+sudo authselect enable-feature with-mkhomedir       # Enable the mkhomedir feature in RHEL 10
+```
+
+```
+sudo systemctl enable --now oddjobd.service         # Ensure the oddjobd service is active (required for mkhomedir)
+```
+
+When an Active Directory user logs in via SSH or console, the system automatically creates `/home/user@domain.local` with correct permissions and SELinux contexts.
+
+
+
+
+
 
