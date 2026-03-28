@@ -44,7 +44,29 @@ Action: Add member test_admin (or your username) to Linux_Admins.
 ![AD Group Members_Check](docs/screenshots/Mem_of_sec.png)
 
 ### 2. SSSD Configuration
-The core of the integration lies in `/etc/sssd/sssd.conf`. It ensures seamless communication with the Domain Controller and handles ID mapping.
+The **System Security Services Daemon (SSSD)** is the heart of this integration. It manages the connection between the RHEL 10 system and the Active Directory domain, handling authentication, caching, and identity mapping.
+The configuration ensures that:
+
+**Offline Authentication**: Users can log in even if the Domain Controller is temporarily unreachable (via cached credentials).
+
+**Automatic ID Mapping**: SSSD automatically translates AD SIDs into Linux UIDs/GIDs without manual intervention.
+
+**Configuration File**: `/etc/sssd/sssd.conf`
+Below is the optimized configuration used for this project (sensitive data sanitized):
+
+
+
+
+
+
+[!IMPORTANT]
+Key Parameters Explained:
+
+ldap_id_mapping = True: Automatically generates Linux-compatible IDs from Active Directory.
+
+use_fully_qualified_names = True: Ensures no name collisions by requiring the user@domain format.
+
+access_provider = ad: Uses AD's native mechanisms to control who can log in.
 
 ### 3. Sudoers Integration
 Instead of manual user management, a specific AD group (e.g., `Linux_Admins`) is mapped to the sudoers policy:
