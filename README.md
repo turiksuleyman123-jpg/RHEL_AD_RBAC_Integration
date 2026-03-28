@@ -111,7 +111,7 @@ sudo systemctl enable --now oddjobd.service         # Ensure the oddjobd service
 
 When an Active Directory user logs in via SSH or console, the system automatically creates `/home/user@domain.local` with correct permissions and SELinux contexts.
 
-
+![CREATING_HOME_DIR](docs/screenshots/home_dir.png)
 
 
 
