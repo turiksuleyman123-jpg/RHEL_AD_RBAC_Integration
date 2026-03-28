@@ -28,3 +28,10 @@ Instead of manual user management, a specific AD group (e.g., `Linux_Admins`) is
 ```bash
 # Location: /etc/sudoers.d/ad_admins
 "%Linux_Admins@yourdomain.local" ALL=(ALL) ALL
+```
+### 3. Home Directory Automation
+Enabled via authselect to ensure a consistent user experience:
+```bash
+sudo authselect enable-feature with-mkhomedir
+```
+
