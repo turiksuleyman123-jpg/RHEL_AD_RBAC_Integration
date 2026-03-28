@@ -54,6 +54,25 @@ The configuration ensures that:
 **Configuration File**: `/etc/sssd/sssd.conf`
 Below is the optimized configuration used for this project (sensitive data sanitized):
 
+### /etc/sssd/sssd.conf
+
+[sssd]
+domains = your_domain.local
+config_file_version = 2
+services = nss, pam
+
+[domain/your_domain.local]
+default_shell = /bin/bash
+krb5_store_password_if_offline = True
+cache_credentials = True
+krb5_realm = YOUR_DOMAIN.LOCAL
+realmd_tags = manages-system joined-with-adcli
+id_provider = ad
+fallback_homedir = /home/%u@%d
+ad_domain = your_domain.local
+use_fully_qualified_names = False        #I changed this field to False just for skipping the domain side
+ldap_id_mapping = True
+access_provider = ad
 
 
 
@@ -68,12 +87,17 @@ use_fully_qualified_names = True: Ensures no name collisions by requiring the us
 
 access_provider = ad: Uses AD's native mechanisms to control who can log in.
 
+![SSSD_CONF_SCR](docs/screenshots/sssd.png)
+
+
 ### 3. Sudoers Integration
 Instead of manual user management, a specific AD group (e.g., `Linux_Admins`) is mapped to the sudoers policy:
 ```bash
 # Location: /etc/sudoers.d/ad_admins
 "%Linux_Admins@yourdomain.local" ALL=(ALL) ALL
 ```
+To check if we really get the sudoer rights we run ``sudo -l`` command:
+![SUDOERS_FILE](docs/screenshots/sudo-l.png)
 ### 4. Home Directory Automation
 Enabled via authselect to ensure a consistent user experience:
 ```bash
