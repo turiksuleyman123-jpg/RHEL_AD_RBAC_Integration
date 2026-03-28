@@ -2,7 +2,7 @@
 
 This project demonstrates the integration of a **Red Hat Enterprise Linux (RHEL) 10** system into a **Windows Server 2022 Active Directory** domain. It focuses on implementing **Role-Based Access Control (RBAC)** by managing Linux `sudo` privileges through AD security groups.
 
-## 🚀 Overview
+## Overview
 
 In modern hybrid environments, centralized identity management is crucial for security and scalability. This project eliminates "identity islands" by allowing Linux servers to consume identities directly from Active Directory using **SSSD** (System Security Services Daemon) and **Kerberos**.
 
@@ -12,13 +12,13 @@ In modern hybrid environments, centralized identity management is crucial for se
 * **Identity Mapping:** Automatic UID/GID mapping for AD objects.
 * **Automated Provisioning:** Automatic creation of home directories for domain users upon their first login.
 
-## 🛠 Tech Stack
+##  Tech Stack
 * **OS:** RHEL 10
 * **Domain Controller:** Windows Server 2022
 * **Tools:** `realmd`, `sssd`, `adcli`, `samba-common-tools`
 * **Protocols:** Kerberos, LDAP, SMB
 
-## 📖 Configuration Highlights
+##  Configuration Highlights
 
 ### 1. SSSD Configuration
 The core of the integration lies in `/etc/sssd/sssd.conf`. It ensures seamless communication with the Domain Controller and handles ID mapping.
